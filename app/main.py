@@ -6,7 +6,7 @@ app = FastAPI(title="Portfolio API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://portfel-frontend-psi-steel.vercel.app"],
+    allow_origins=["http://localhost:3000", "https://portfel-frontend-psi-steel.vercel.app", "https://samanch1koo7.space", "https://www.samanch1koo7.space"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
