@@ -1,24 +1,24 @@
-import os
-import shutil
 import uuid
 from fastapi import APIRouter, Depends, UploadFile, File
+from supabase import create_client
+from app.config import settings
 from app.core.dependencies import get_current_admin
 
 router = APIRouter(prefix="/api/upload", tags=["upload"])
 
-UPLOAD_DIR = "static/uploads"
+supabase = create_client(settings.supabase_url, settings.supabase_key)
+BUCKET = "uploads"
 
 @router.post("/")
-def upload_file(
+async def upload_file(
     file: UploadFile = File(...),
     current_admin: str = Depends(get_current_admin),
 ):
     ext = file.filename.split(".")[-1]
     unique_name = f"{uuid.uuid4()}.{ext}"
-    file_path = os.path.join(UPLOAD_DIR, unique_name)
 
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    content = await file.read()
+    supabase.storage.from_(BUCKET).upload(unique_name, content, {"content-type": file.content_type})
 
-    file_url = f"/static/uploads/{unique_name}"
+    file_url = f"{settings.supabase_url}/storage/v1/object/public/{BUCKET}/{unique_name}"
     return {"url": file_url}
