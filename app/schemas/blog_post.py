@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class BlogPostBase(BaseModel):
@@ -7,6 +7,7 @@ class BlogPostBase(BaseModel):
     slug: str
     content: str
     tags: Optional[str] = None
+    image_urls: List[str] = []
 
 class BlogPostCreate(BlogPostBase):
     pass

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
 from datetime import datetime, timezone
 from app.database import Base
 
@@ -10,4 +10,5 @@ class BlogPost(Base):
     slug = Column(String, unique=True, nullable=False)  # URL uchun, masalan "birinchi-postim"
     content = Column(Text, nullable=False)
     tags = Column(String, nullable=True)  # vergul bilan ajratilgan: "python,ai"
+    image_urls = Column(JSON, default=list)  # Rasmlar ro'yxati
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
