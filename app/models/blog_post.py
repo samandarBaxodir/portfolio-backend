@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
-from datetime import datetime
+from datetime import datetime, timezone
 from app.database import Base
 
 class BlogPost(Base):
@@ -10,4 +10,4 @@ class BlogPost(Base):
     slug = Column(String, unique=True, nullable=False)  # URL uchun, masalan "birinchi-postim"
     content = Column(Text, nullable=False)
     tags = Column(String, nullable=True)  # vergul bilan ajratilgan: "python,ai"
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
