@@ -25,3 +25,12 @@ app.include_router(settings.router)
 @app.get("/")
 def root():
     return {"message": "Portfolio backend ishlayapti"}
+
+@app.api_route("/api/health", methods=["GET", "HEAD"])
+def health():
+    # Supabase Storage'ga haqiqiy so'rov yuboradi — bepul loyiha pauzaga tushmasligi uchun
+    try:
+        upload.supabase.storage.from_(upload.BUCKET).list(options={"limit": 1})
+        return {"status": "ok", "supabase": "ok"}
+    except Exception as e:
+        return {"status": "ok", "supabase": f"xato: {type(e).__name__}"}
